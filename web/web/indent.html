@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>网络商城-购物车</title>
+    <link rel="stylesheet" href="css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="index.html" class="logo">网络商城</a>
+        <div class="navMain">
+            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+            <button class="searchBtn">查找商品</button>
+            <span class="navOpt">
+                <a href="register.html" class="register">注册</a>
+                <a href="login.html" class="login">登录</a>
+            </span>
+            <ul class="user ">
+                <li class="username">
+                    <span class="name"></span>
+                    <span class="down"></span>
+                </li>
+                <ul class="userOpt">
+                    <li>
+                        <a href="javascript:;" id="shoppingCart">购物车</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="indent">订单状态</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="userInfo">个人信息</a>
+                    </li>
+                    <li>
+                        <a href="javascript:logout();" id="logOut">注销登录</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="indent">
+        <table>
+            <tr>
+                <th>订单号</th>
+                <th>商品名称</th>
+                <th>价格</th>
+                <th>数量</th>
+                <th>订单时间</th>
+                <th>订单状态</th>
+                <th>操作</th>
+            </tr>
+            <!-- <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr> -->
+        </table>
+    </div>
+
+    <script>
+        $.ajax({
+            url: '/shop/ShowIndent',
+            type: 'POST',
+            success: function (data) {
+                var data = JSON.parse(data);
+                console.log(data);
+                if (data.state == 0) {
+                    alert('用户未登录，请先登录');
+                    location.href = 'login.html';
+                } else if (data.isExist == 0) {
+                    $('table').append("<tr>用户没有任何订单</tr>");
+                } else {
+                    var indent = data.indent;
+                    var text = '';
+                    for (var i = 0; i < indent.length; i++) {
+                        if (indent[i].indentsta == '已完成') {
+                            text += '<tr>' +
+                                '<td>' + indent[i].indentid + '</td>' +
+                                '<td>' + indent[i].pname + '</td>' +
+                                '<td>' + indent[i].cprice + '</td>' +
+                                '<td>' + indent[i].counts + '</td>' +
+                                '<td>' + indent[i].ctime + '</td>' +
+                                '<td>' + indent[i].indentsta + '</td>' +
+                                '<td><a href=\"javascript:alert(\'该订单已完成\');\">确认收货</a></td>' +
+                                '</tr>';
+                        } else {
+                            text += '<tr>' +
+                                '<td>' + indent[i].indentid + '</td>' +
+                                '<td>' + indent[i].pname + '</td>' +
+                                '<td>' + indent[i].cprice + '</td>' +
+                                '<td>' + indent[i].counts + '</td>' +
+                                '<td>' + indent[i].ctime + '</td>' +
+                                '<td>' + indent[i].indentsta + '</td>' +
+                                '<td><a href=\"javascript:reciveProduct(\'' + indent[i].indentid +
+                                '\');\">确认收货</a></td>' +
+                                '</tr>';
+                        }
+                    }
+                    $('table').append(text);
+                }
+            }
+        });
+
+        function reciveProduct(id) {
+            $.ajax({
+                url: '/shop/ReceiveProduct',
+                type: 'POST',
+                data: 'indentid=' + id,
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    if (data.state == 0) {
+                        alert(data.message);
+                        location.href = 'login.html';
+                    } else if (data.state == 1) {
+                        alert(data.message);
+                        location.reload();
+                    } else if (data.state == 2) {
+                        alert(data.message);
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+    </script>
+    <script src="js/js.js"></script>
+</body>
+
+</html>

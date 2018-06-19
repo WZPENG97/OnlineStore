@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<link rel="stylesheet" type="text/css" href="css/detail.css"/>
+		<script src="js/jquery-3.3.1.min.js"></script>
+		<style>
+			#div2:nth-child(5) .part2{
+				text-align: center;
+				font-size: 12px;
+				background-color: #000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app"style="margin: auto;width: 80%;">
+			<div class="nav">
+		        <a href="index.html" class="logo">网络商城</a>
+		        <div class="navMain">
+		            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+		            <button class="searchBtn">查找商品</button>
+		            <a href="register.html" class="register">注册</a>
+		            <a href="login.html" class="login">登录</a>
+		        </div>
+		    </div>
+			<h1 id="name">{{product}}</h1>
+			<hr />
+			
+			<div id="div1">
+				<img style='width:100%' :src="img"/>
+			</div>
+			
+			<div id="div2">
+				<div id="item"v-for='item in items'>
+					<div id="part1">{{item.name}}</div>
+					<div id="part2">{{item.value}}</div>					
+				</div>
+				<div id="item">
+					<div id="part1">购买数量</div>
+					<div id="part2">
+						<button id='down'@click='down'>-</button>
+						{{num}}
+						<button id='up'@click='up'>+</button>
+					</div>										
+				</div>
+				<div id="item" style="border: none;margin-top: 15px;">
+					<div id="part1">
+						<button id='add'@click="add">添加购物车</button>
+					</div>
+					<div id="part2">
+						<button id='buy'@click='buy'>购买</button>
+					</div>						
+				</div>
+			</div>
+		</div>
+		
+		<script src='js/detail.js'></script>
+		<script src="js/js.js"></script>
+	</body>
+</html>

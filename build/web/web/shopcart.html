@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>网络商城-购物车</title>
+    <link rel="stylesheet" href="css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="index.html" class="logo">网络商城</a>
+        <div class="navMain">
+            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+            <button class="searchBtn">查找商品</button>
+            <span class="navOpt">
+                <a href="register.html" class="register">注册</a>
+                <a href="login.html" class="login">登录</a>
+            </span>
+            <ul class="user ">
+                <li class="username">
+                    <span class="name"></span>
+                    <span class="down"></span>
+                </li>
+                <ul class="userOpt">
+                    <li>
+                        <a href="javascript:;" id="shoppingCart">购物车</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="indent">订单状态</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="userInfo">个人信息</a>
+                    </li>
+                    <li>
+                        <a href="javascript:logout();" id="logOut">注销登录</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="cart">
+        <form id="cartForm">
+            <table>
+                <tr>
+                    <th>是否购买</th>
+                    <th>商品名称</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>删除</th>
+                </tr>
+                <!-- <tr>
+                <td><input type="checkbox" name="pid" value="1"></td>
+                <td>我要上天羽绒服</td>
+                <td>999</td>
+                <td><button class="glyphicon glyphicon-minus minus" type="button"></button>
+                    <span class="count" name="count">1</span>
+                    <button class="glyphicon glyphicon-plus plus" type="button"></button>
+                    <input type="text" name="count" id="count" value="">
+                </td>
+                <td><button class="glyphicon glyphicon-trash delete" type="button" pid="1"></button></td>
+            </tr> -->
+            </table>
+        </form>
+        <button class="buy" onclick="buy()">确认购买</button>
+    </div>
+
+    <script>
+        $.ajax({
+            url: '/shop/ShowCart',
+            type: 'POST',
+            data: 'username=' + location.href.split('=')[1],
+            success: function (data) {
+                var data = JSON.parse(data);
+                var cart = data.AllCart;
+                var text = '';
+                if (cart.length > 0) {
+                    for (var i = 0; i < cart.length; i++) {
+                        text += '<tr>' +
+                            '<td><input type=\"checkbox\" name=\"checkbox1\" value=\"' + cart[i].pid +
+                            '\"></td>' +
+                            '<td>' + cart[i].pname + '</td>' +
+                            '<td>' + cart[i].price + '</td>' +
+                            '<td><button class=\"glyphicon glyphicon-minus minus\" type=\"button\"></button>' +
+                            '<span class=\"count\" name=\"count\">' + cart[i].counts + '</span>' +
+                            '<button class=\"glyphicon glyphicon-plus plus\" type=\"button\"></button>' +
+                            '<input type=\"text\" name=\"counts\" class=\"countValue\" value=\"' + cart[i].counts +
+                            '\">' +
+                            '</td>' +
+                            '<td><button class=\"glyphicon glyphicon-trash delete\" type=\"button\" pid=\"' +
+                            cart[i].pid + '\"></button></td>' +
+                            '</tr>';
+                    }
+                } else {
+                    text = '<tr>购物车内暂无商品</tr>';
+                }
+                $('table').append(text);
+                minus();
+                plus();
+                cartDelete()
+            }
+        });
+
+        function buy() {
+            $.ajax({
+                url: '/shop/CartBuy',
+                type: 'POST',
+                data: $('#cartForm').serialize(),
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    if (data.state == 2) {
+                        return false;
+                    } else if (data.state == 0) {
+                        alert("用户未登陆，请重新登陆");
+                        location.href = 'login.html';
+                    } else if (data.state == 3) {
+                        alert('数据库错误，请联系管理员');
+                    } else if (data.state == 4) {
+                        alert('余额不足，请充值');
+                        return false;
+                    } else if (data.state == 1) {
+                        alert('购买成功');
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+        function cartDelete() {
+            $(".delete").click(function () {
+                console.log($(this).attr('pid'));
+                $.ajax({
+                    url: '/shop/UserDelProduct',
+                    type: 'POST',
+                    data: 'pid=' + $(this).attr('pid'),
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if (data.state == 1) {
+                            alert(data.message);
+                            location.reload();
+                        } else if (data.state == 0) {
+                            alert(data.message);
+                        }
+                    }
+                })
+            })
+        }
+    </script>
+    <script src="js/js.js"></script>
+</body>
+
+</html>
