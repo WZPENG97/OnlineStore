@@ -70,88 +70,12 @@
         <button class="buy" onclick="buy()">确认购买</button>
     </div>
 
-    <script>
-        $.ajax({
-            url: '/shop/ShowCart',
-            type: 'POST',
-            data: 'username=' + location.href.split('=')[1],
-            success: function (data) {
-                var data = JSON.parse(data);
-                var cart = data.AllCart;
-                var text = '';
-                if (cart.length > 0) {
-                    for (var i = 0; i < cart.length; i++) {
-                        text += '<tr>' +
-                            '<td><input type=\"checkbox\" name=\"checkbox1\" value=\"' + cart[i].pid +
-                            '\"></td>' +
-                            '<td>' + cart[i].pname + '</td>' +
-                            '<td>' + cart[i].price + '</td>' +
-                            '<td><button class=\"glyphicon glyphicon-minus minus\" type=\"button\"></button>' +
-                            '<span class=\"count\" name=\"count\">' + cart[i].counts + '</span>' +
-                            '<button class=\"glyphicon glyphicon-plus plus\" type=\"button\"></button>' +
-                            '<input type=\"text\" name=\"counts\" class=\"countValue\" value=\"' + cart[i].counts +
-                            '\">' +
-                            '</td>' +
-                            '<td><button class=\"glyphicon glyphicon-trash delete\" type=\"button\" pid=\"' +
-                            cart[i].pid + '\"></button></td>' +
-                            '</tr>';
-                    }
-                } else {
-                    text = '<tr>购物车内暂无商品</tr>';
-                }
-                $('table').append(text);
-                minus();
-                plus();
-                cartDelete()
-            }
-        });
-
-        function buy() {
-            $.ajax({
-                url: '/shop/CartBuy',
-                type: 'POST',
-                data: $('#cartForm').serialize(),
-                success: function (data) {
-                    var data = JSON.parse(data);
-                    if (data.state == 2) {
-                        return false;
-                    } else if (data.state == 0) {
-                        alert("用户未登陆，请重新登陆");
-                        location.href = 'login.html';
-                    } else if (data.state == 3) {
-                        alert('数据库错误，请联系管理员');
-                    } else if (data.state == 4) {
-                        alert('余额不足，请充值');
-                        return false;
-                    } else if (data.state == 1) {
-                        alert('购买成功');
-                        location.reload();
-                    }
-                }
-            });
-        }
-
-        function cartDelete() {
-            $(".delete").click(function () {
-                console.log($(this).attr('pid'));
-                $.ajax({
-                    url: '/shop/UserDelProduct',
-                    type: 'POST',
-                    data: 'pid=' + $(this).attr('pid'),
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.state == 1) {
-                            alert(data.message);
-                            location.reload();
-                        } else if (data.state == 0) {
-                            alert(data.message);
-                        }
-                    }
-                })
-            })
-        }
-    </script>
     <script src="js/js.js"></script>
+    <script>
+        showCart()
+        landState();
+        searchBtn();
+    </script>
 </body>
 
 </html>

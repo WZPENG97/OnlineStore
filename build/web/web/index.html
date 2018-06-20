@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.3.1.min.js"></script>
 </head>
-
 <body>
     <div class="nav">
         <a href="index.html" class="logo">网络商城</a>
@@ -20,7 +19,7 @@
                 <a href="register.html" class="register">注册</a>
                 <a href="login.html" class="login">登录</a>
             </span>
-            <ul class="user ">
+            <ul class="user">
                 <li class="username"><span class="name"></span><span class="down"></span></li>
                 <ul class="userOpt">
                     <li>
@@ -94,44 +93,9 @@
     </div>
     <script src="js/js.js"></script>
     <script>
-        var productClothes = $('#productClothes');
-        var productDigital = $('#productDigital');
-        var productBooks = $('#productBooks');
-        var productGame = $('#productGame');
-        var productLife = $('#productLife');
-        var productMakeup = $('#productMakeup');
-        var productSports = $('#productSports');
-
-        function categroyText(categroy) {
-            var text = '';
-            for (var i = 0; i < categroy.length; i++) {
-                text += '<div class=\"productItem\" pid=\"' + categroy[i].pid + '\">' +
-                    '<img src=\"' + categroy[i].pimage + '\" alt=\"product\">' +
-                    '<p>' + categroy[i].pname + '</p>' +
-                    '<span>&yen;</span><span>' + categroy[i].price + '</span>' +
-                    '</div>';
-            }
-            return text;
-        }
-
-
-        $.ajax({
-            url: '/shop/AllProduct',
-            type: 'POST',
-            success: function (data) {
-                var categroy = JSON.parse(data).categroy;
-                // console.log(categroy);
-                productClothes.append(categroyText(categroy.Clothing_Acc));
-                productDigital.append(categroyText(categroy.Digital_products));
-                productBooks.append(categroyText(categroy.Book_office));
-                productGame.append(categroyText(categroy.Game));
-                productLife.append(categroyText(categroy.daily_use));
-                productMakeup.append(categroyText(categroy.Makeup_products));
-                productSports.append(categroyText(categroy.Sports_products));
-
-            }
-        })
-
+        getAllProduct();
+        landState();
+        searchBtn()
     </script>
 </body>
 

@@ -54,35 +54,12 @@
                     <input type="text" id="address" name="address" placeholder="请输入收货地址">
                 </div>
             </form>
-            <button class="regBtn">注册</button>
+            <button class="regBtn" onclick="register()">注册</button>
         </div>
 
     </div>
 
     <script src="js/js.js"></script>
-    <script>
-        $('.regBtn')[0].onclick = function () {
-            if (regValid()) {
-                $.ajax({
-                    url: '/shop/UserRegister',
-                    type: 'POST',
-                    data: $('#regForm').serialize(),
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.state == "1") {
-                            alert(data.message);
-                            location.href = "login.html";
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    }
-                })
-            }
-        }
-    </script>
 </body>
 
 </html>

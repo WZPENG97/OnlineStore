@@ -5,12 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>网络商城-添加商品</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
+    <div class="nav">
+            <a href="admin.html" class="logo">网络商城-后台管理</a>
+        <ul class="option">
+            <li class="username">操作
+                <span class="down"></span>
+            </li>
+            <ul class="userOpt">
+                <li>
+                    <a href="indentManage.html">订单管理</a>
+                </li>
+                <li>
+                    <a href="addProduct.html">添加商品</a>
+                </li>
+            </ul>
+        </ul>
+    </div>
     <div class="detailContent">
         <h1>添加商品</h1>
         <form action="" id="addProductForm">
@@ -43,31 +59,9 @@
                 <textarea id="description" name="description"></textarea>
             </div>
         </form>
-        <button type="button" onclick="addProduct()">保存</button>
-
-
+        <button type="button" onclick="addProduct()" class="addBtn">保存</button>
     </div>
-    <script>
-        function addProduct(){
-            $.ajax({
-                url:'/shop/AddProduct',
-                type:'post',
-                data:$('#addProductForm').serialize(),
-                success:function(data){
-                    var data = JSON.parse(data);
-                    if(data.state==0){
-                        alert('请先登录管理员帐号');
-                        location.href = 'adminLogin.html';
-                    }else if(data.state==1){
-                        alert(data.message);
-                        location.href = 'admin.html';
-                    }else if(data.state==2){
-                        alert(data.message);
-                    }
-                }
-            })
-        }
-    </script>
+    <script src="js/js.js"></script>
 </body>
 
 </html>

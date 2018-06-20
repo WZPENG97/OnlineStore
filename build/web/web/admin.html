@@ -13,7 +13,20 @@
 
 <body>
     <div class="nav">
-        <a href="index.html" class="logo">网络商城</a>
+        <a href="admin.html" class="logo">网络商城-后台管理</a>
+        <ul class="option">
+            <li class="username">操作
+                <span class="down"></span>
+            </li>
+            <ul class="userOpt">
+                <li>
+                    <a href="indentManage.html">订单管理</a>
+                </li>
+                <li>
+                    <a href="addProduct.html">添加商品</a>
+                </li>
+            </ul>
+        </ul>
     </div>
 
     <div class="manageBox">
@@ -36,62 +49,7 @@
     </div>
     <script src="js/js.js"></script>
     <script>
-        function showAllPro() {
-            $.ajax({
-                url: '/shop/AllProduct',
-                type: 'post',
-                success: function (data) {
-                    var data = JSON.parse(data);
-                    var cate = data.categroy;
-                    var text = '';
-                    for (var a in cate) {
-                        for (var i = 0; i < cate[a].length; i++) {
-                            var product = cate[a][i];
-                            text += '<tr>' +
-                                '<td>' + product.pname + '</td>' +
-                                '<td>' + product.cname + '</td>' +
-                                '<td>' + product.price + '</td>' +
-                                '<td>' + product.store + '</td>' +
-                                '<td><a href=\"changeDetail.html?pid=' + product.pid +
-                                '\" class="glyphicon glyphicon-edit" title="修改商品信息" pid=\"' + product.pid +
-                                '\"></a>' +
-                                '<button type="button" class="glyphicon glyphicon-trash" title="删除该商品" pid=\"' +
-                                product.pid + '\"></button></td>' +
-                                '</tr>';
-                        }
-                    }
-                    $('table').append(text);
-                    deleteProduct()
-                }
-            })
-        }
         showAllPro();
-
-        // 删除商品
-        function deleteProduct() {
-            $('.glyphicon-trash').click(function () {
-                $.ajax({
-                    url: '/shop/DelProduct',
-                    type: 'post',
-                    data: 'pid=' + $(this).attr("pid"),
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.state == 0) {
-                            alert(data.message);
-                            location.href = 'adminLogin.html';
-                        } else if (data.state == 1) {
-                            alert(data.message);
-                            location.reload();
-                        } else if (data.state == 2) {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    }
-                })
-            })
-        }
     </script>
 </body>
 

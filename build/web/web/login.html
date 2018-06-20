@@ -31,32 +31,10 @@
                     <input type="password" id="password" name="password" placeholder="请输入密码">
                 </div>
             </form>
-            <button class="landBtn">登录</button>
+            <button class="landBtn" onclick="login()">登录</button>
         </div>
     </div>
     <script src="js/js.js"></script>
-    <script>
-        $('.landBtn')[0].onclick = function () {
-            if (loginValid()) {
-                $.ajax({
-                    url: '/shop/UserLogin',
-                    type: 'POST',
-                    data: $('#loginForm').serialize(),
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.state == "1") {
-                            location.href = "index.html";
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    }
-                })
-            }
-        }
-    </script>
 </body>
 
 </html>

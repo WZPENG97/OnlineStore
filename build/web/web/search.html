@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,38 +9,39 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.3.1.min.js"></script>
 </head>
+
 <body>
-        <div class="nav">
-                <a href="index.html" class="logo">网络商城</a>
-                <div class="navMain">
-                    <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
-                    <button class="searchBtn">查找商品</button>
-                    <span class="navOpt">
-                        <a href="register.html" class="register">注册</a>
-                        <a href="login.html" class="login">登录</a>
-                    </span>
-                    <ul class="user ">
-                        <li class="username">
-                            <span class="name"></span>
-                            <span class="down"></span>
-                        </li>
-                        <ul class="userOpt">
-                            <li>
-                                <a href="javascript:;" id="shoppingCart">购物车</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" id="indent">订单状态</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" id="userInfo">个人信息</a>
-                            </li>
-                            <li>
-                                <a href="javascript:logout();" id="logOut">注销登录</a>
-                            </li>
-                        </ul>
-                    </ul>
-                </div>
-            </div>
+    <div class="nav">
+        <a href="index.html" class="logo">网络商城</a>
+        <div class="navMain">
+            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+            <button class="searchBtn">查找商品</button>
+            <span class="navOpt">
+                <a href="register.html" class="register">注册</a>
+                <a href="login.html" class="login">登录</a>
+            </span>
+            <ul class="user ">
+                <li class="username">
+                    <span class="name"></span>
+                    <span class="down"></span>
+                </li>
+                <ul class="userOpt">
+                    <li>
+                        <a href="javascript:;" id="shoppingCart">购物车</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="indent">订单状态</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="userInfo">个人信息</a>
+                    </li>
+                    <li>
+                        <a href="javascript:logout();" id="logOut">注销登录</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
     <div class="searchContainer">
         <input type="text" placeholder="疯狂Java讲义" class="searchInput">
         <button class="searchStart">查找商品</button>
@@ -52,51 +54,14 @@
     </div>
     <script src="js/js.js"></script>
     <script>
-        var value = location.href.split('=')[1]||$('.searchInput').val()||$('.searchInput').attr('placeholder');
-        var text = "";
-        $.ajax({
-            url:'/shop/FindProduct',
-            type:'POST',
-            data: 'pname='+value,
-            success: function(data){
-                var data = JSON.parse(data);
-                var product = data.product;
-
-                if(data.isExist!==0){ 
-                    for(var i = 0;i<product.length;i++){
-                        text+= '<div class=\"productItem\" pid=\"' + product[i].pid + '\">'+
-                            '<img src=\"'+product[i].pimage+'\" alt=\"product\">'+
-                            '<p>'+ product[i].pname+'</p>'+
-                            '<span>&yen;</span><span>'+ product[i].price+'</span>'+
-                            '</div>';
-                    }
-                    $('.searchNote').text("一共查询到"+product.length+"件商品");
-                    
-                    $('.searchContainer').append(text);
-                }else{
-                    $('.searchNote').text("没有查询到商品");
-                }
-                $('.searchInput').val(decodeURIComponent(value));
-            },
-            error: function(data){
-                console.log(data);
-            }
-        })
-        
-        $('.searchStart')[0].addEventListener('click',function(){
-            location.href = 'search.html?value='+$('.searchInput').val()||$('.searchInput').attr('placeholder');
-        })
-
-        window.onload = function(){
-            var productItem = $('.productItem');
-            if(productItem.length>0){
-                for(var i=0;i<productItem.length;i++){
-                    productItem[i].addEventListener('click',function(){
-                        location.href = "detail.html?pid="+$(this).attr('pid');
-                    },false);
-                }
-            }
-        }
+        landState();
+        search();
+        $('.searchStart')[0].addEventListener('click', function () {
+            location.href = 'search.html?value=' + $('.searchInput').val() || $('.searchInput').attr(
+                'placeholder');
+        });
+        searchBtn();
     </script>
 </body>
+
 </html>

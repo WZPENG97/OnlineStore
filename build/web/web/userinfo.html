@@ -118,128 +118,7 @@
     </div>
     <script src="js/js.js"></script>
     <script>
-        function getUserInfo() {
-            var userinfo;
-            $.ajax({
-                url: '/shop/UserRequest',
-                type: 'POST',
-                async: false,
-                success: function (data) {
-                    var data = JSON.parse(data);
-                    userinfo = data;
-                },
-                error: function (data) {
-                    console.log(data);
-                }
-            });
-            return userinfo;
-        }
-        var userinfo = getUserInfo();
-        $('#sex').val(userinfo.sex);
-        $('#email').val(userinfo.email);
-        $('#phoneNumber').val(userinfo.telephone);
-        $('#postNumber').val(userinfo.postcode);
-        $('#address').val(userinfo.address);
-        $('#money').text(userinfo.money);
-
-        function save() {
-            if (infoChangeValid()) {
-                $.ajax({
-                    url: '/shop/UserUpdateInf',
-                    type: 'POST',
-                    data: $('#userinfoForm').serialize(),
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.state == 0) {
-                            alert(data.message);
-                            location.href = 'login.html';
-                        } else if (data.state == 1) {
-                            alert(data.message);
-                            location.reload();
-                        } else if (data.state == 2) {
-                            alert('更新失败，请重试或联系管理员');
-                        }
-                    }
-                });
-            }
-        }
-
-        function infoChangeValid() {
-            var emailReg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.){1,63}[a-z0-9]+$/;
-            var phoneNumberReg = /^1[0-9]{10}/;
-            var postNumberReg = /^[1-9][0-9]{5}$/;
-            if (!emailReg.test(email.value)) {
-                alert('邮箱格式不正确');
-                return false;
-            } else if (!phoneNumberReg.test(phoneNumber.value)) {
-                alert('手机号码不正确');
-                return false;
-            } else if (!postNumberReg.test(postNumber.value)) {
-                alert('邮政编码不正确');
-                return false;
-            } else if (address.value == "") {
-                alert('地址不能为空');
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        function recharge() {
-            var money = $('#rechargeMoney').val();
-            var moneyReg = /^[1-9][0-9]*$/;
-            if (moneyReg.test(money)) {
-                $.ajax({
-                    url: '/shop/UserRecharge',
-                    type: 'POST',
-                    data: $('#rechargeForm').serialize(),
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.state == 0) {
-                            alert('充值失败，请重试或联系管理员');
-                        } else if (data.state == 1) {
-                            alert(data.message);
-                            location.reload();
-                        }
-                    }
-                });
-            } else {
-                alert('请输入正确的金额');
-            }
-
-        }
-
-        function changePassword() {
-            if ($('#newPassword').val().length < 6) {
-                alert('密码长度过短');
-            } else {
-                $.ajax({
-                    url: '/shop/UserUpdatePwd',
-                    type: 'POST',
-                    data: $('#changePassForm').serialize(),
-                    success: function(data){
-                        var data = JSON.parse(data);
-                        console.log(data);
-                        
-
-                        if (data.state == 0) {
-                            alert(data.message);
-                            location.href = 'login.html';
-                        } else if (data.state == 1) {
-                            alert('更新成功，请重新登陆');
-                            location.href = 'login.html';
-                        } else if (data.state == 2) {
-                            alert('更新失败，请与管理员联系');
-                        } else if (data.state == 3) {
-                            alert(data.message);
-                        }
-                    }
-                });
-            }
-
-        }
-
-
+        showInfo()
         $('#infoItem').click(function () {
             $('.infoContent').css('display', 'block');
             $('.rechargeContent').css('display', 'none');
@@ -261,6 +140,9 @@
             $('.active').removeClass('active');
             $(this).addClass('active');
         });
+
+        landState();
+        searchBtn();
     </script>
 </body>
 

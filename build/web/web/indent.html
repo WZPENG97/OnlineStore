@@ -65,76 +65,12 @@
             </tr> -->
         </table>
     </div>
-
-    <script>
-        $.ajax({
-            url: '/shop/ShowIndent',
-            type: 'POST',
-            success: function (data) {
-                var data = JSON.parse(data);
-                console.log(data);
-                if (data.state == 0) {
-                    alert('用户未登录，请先登录');
-                    location.href = 'login.html';
-                } else if (data.isExist == 0) {
-                    $('table').append("<tr>用户没有任何订单</tr>");
-                } else {
-                    var indent = data.indent;
-                    var text = '';
-                    for (var i = 0; i < indent.length; i++) {
-                        if (indent[i].indentsta == '已完成') {
-                            text += '<tr>' +
-                                '<td>' + indent[i].indentid + '</td>' +
-                                '<td>' + indent[i].pname + '</td>' +
-                                '<td>' + indent[i].cprice + '</td>' +
-                                '<td>' + indent[i].counts + '</td>' +
-                                '<td>' + indent[i].ctime + '</td>' +
-                                '<td>' + indent[i].indentsta + '</td>' +
-                                '<td><a href=\"javascript:alert(\'该订单已完成\');\">确认收货</a></td>' +
-                                '</tr>';
-                        } else {
-                            text += '<tr>' +
-                                '<td>' + indent[i].indentid + '</td>' +
-                                '<td>' + indent[i].pname + '</td>' +
-                                '<td>' + indent[i].cprice + '</td>' +
-                                '<td>' + indent[i].counts + '</td>' +
-                                '<td>' + indent[i].ctime + '</td>' +
-                                '<td>' + indent[i].indentsta + '</td>' +
-                                '<td><a href=\"javascript:reciveProduct(\'' + indent[i].indentid +
-                                '\');\">确认收货</a></td>' +
-                                '</tr>';
-                        }
-                    }
-                    $('table').append(text);
-                }
-            }
-        });
-
-        function reciveProduct(id) {
-            $.ajax({
-                url: '/shop/ReceiveProduct',
-                type: 'POST',
-                data: 'indentid=' + id,
-                success: function (data) {
-                    var data = JSON.parse(data);
-                    if (data.state == 0) {
-                        alert(data.message);
-                        location.href = 'login.html';
-                    } else if (data.state == 1) {
-                        alert(data.message);
-                        location.reload();
-                    } else if (data.state == 2) {
-                        alert(data.message);
-                        location.reload();
-                    }
-                },
-                error: function (data) {
-                    console.log(data);
-                }
-            });
-        }
-    </script>
     <script src="js/js.js"></script>
+    <script>
+        landState();
+        showIndent();
+        searchBtn()
+    </script>
 </body>
 
 </html>
