@@ -80,6 +80,18 @@
         <servlet-name>AdminLogin</servlet-name>
         <servlet-class>com.admin.AdminLogin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DelProduct</servlet-name>
+        <servlet-class>com.admin.DelProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProductInf</servlet-name>
+        <servlet-class>com.admin.UpdateProductInf</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddProduct</servlet-name>
+        <servlet-class>com.admin.AddProduct</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserRegister</servlet-name>
         <url-pattern>/UserRegister</url-pattern>
@@ -159,6 +171,18 @@
     <servlet-mapping>
         <servlet-name>AdminLogin</servlet-name>
         <url-pattern>/AdminLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DelProduct</servlet-name>
+        <url-pattern>/DelProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductInf</servlet-name>
+        <url-pattern>/UpdateProductInf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProduct</servlet-name>
+        <url-pattern>/AddProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

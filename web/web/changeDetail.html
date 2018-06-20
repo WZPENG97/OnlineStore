@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div class="detailContent">
+        <h1>修改商品信息</h1>
+        <form action="" id="changeDetailForm">
+            <div class="formItem">
+                <label for="pname">商品名：</label>
+                <input type="text" id="pname" name="pname">
+            </div>
+            <div class="formItem">
+                <label for="price">价格：</label>
+                <input type="number" id="price" name="price">
+            </div>
+            <div class="formItem">
+                <label for="store">库存：</label>
+                <input type="number" id="store" name="store">
+            </div>
+            <div class="formItem">
+                <label for="description">商品描述：</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+            <input type="number" id="pid" name="pid" style="display:none">
+        </form>
+        <button type="button" onclick="changeDetail()">保存</button>
+
+
+    </div>
+    <script>
+            var detail;
+            $.ajax({
+                url: '/shop/DesProduct',
+                type: 'POST',
+                async: false,
+                data: 'pid=' + location.href.split('=')[1],
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    detail = data;
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        $('#pname').val(detail.pname);
+        $('#price').val(detail.price);
+        $('#store').val(detail.store);
+        $('#description').val(detail.description);
+        $('#pid').val(detail.pid);
+
+        function changeDetail(){
+            $.ajax({
+                url:'/shop/UpdateProductInf',
+                type:'post',
+                data:$('#changeDetailForm').serialize(),
+                success:function(data){
+                    var data = JSON.parse(data);
+                    if(data.state==0){
+                        alert(data.message);
+                        location.href = 'adminLogin.html';
+                    }else if(data.state==1){
+                        alert(data.message);
+                        location.reload();
+                    }else if(data.state==2){
+                        alert(data.message);
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

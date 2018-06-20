@@ -2,7 +2,7 @@
  * @Author: WZPENG 
  * @Date: 2018-06-02 19:41:38 
  * @Last Modified by: WZPENG
- * @Last Modified time: 2018-06-18 14:40:50
+ * @Last Modified time: 2018-06-20 13:09:38
  */
 
 /* base style */
@@ -317,3 +317,16 @@ table th{
 .active{
     background-color: #ccc;
 }
+
+/* manage style */
+
+.manageBox td{
+    padding: 0;
+}
+.manageBox button{
+    border: none;
+    background-color: #fff;
+    margin: 0 10px;
+}
+
+/* changeDetail style */

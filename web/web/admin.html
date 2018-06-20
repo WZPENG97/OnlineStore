@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>网络商城</title>
+    <title>网络商城-后台管理</title>
+    <link rel="stylesheet" href="css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.3.1.min.js"></script>
 </head>
@@ -13,254 +14,84 @@
 <body>
     <div class="nav">
         <a href="index.html" class="logo">网络商城</a>
-        <div class="navMain">
-            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
-            <button class="searchBtn">查找商品</button>
-            <span class="navOpt">
-                <a href="register.html" class="register">注册</a>
-                <a href="login.html" class="login">登录</a>
-            </span>
-            <ul class="user ">
-                <li class="username">
-                    <span class="name"></span>
-                    <span class="down"></span>
-                </li>
-                <ul class="userOpt">
-                    <li>
-                        <a href="javascript:;" id="shoppingCart">购物车</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" id="indent">订单状态</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" id="userInfo">个人信息</a>
-                    </li>
-                    <li>
-                        <a href="javascript:logout();" id="logOut">注销登录</a>
-                    </li>
-                </ul>
-            </ul>
-        </div>
     </div>
-    <div class="aside">
-        <ul>
-            <li id="infoItem">
-                <a href="#1">个人信息</a>
-            </li>
-            <li id="rechargeItem">
-                <a href="#2">充值</a>
-            </li>
-            <li id="changePassItem">
-                <a href="#2">修改密码</a>
-            </li>
-        </ul>
-    </div>
-    <div class="mainContent">
-        <div class="infoContent">
-            <form id="userinfoForm">
-                <h1 class="regTitle">个人信息修改</h1>
-                <div class="formItem">
-                    <label for="sex">性别：</label>
-                    <select name="sex" id="sex">
-                        <option value="male">男</option>
-                        <option value="female">女</option>
-                    </select>
-                </div>
-                <div class="formItem">
-                    <label for="email">邮箱：</label>
-                    <input type="text" id="email" name="email" placeholder="请输入邮箱地址">
-                </div>
-                <div class="formItem">
-                    <label for="phoneNumber">电话：</label>
-                    <input type="text" id="phoneNumber" name="telephone" placeholder="请输入手机号">
-                </div>
-                <div class="formItem">
-                    <label for="postNumber">邮编：</label>
-                    <input type="text" id="postNumber" name="postcode" placeholder="请输入邮政编码">
-                </div>
-                <div class="formItem">
-                    <label for="address">地址：</label>
-                    <input type="text" id="address" name="address" placeholder="请输入收货地址">
-                </div>
-            </form>
-            <button class="saveBtn" onclick="save()">保存</button>
-        </div>
 
-        <div class="rechargeContent" style="display: none">
-            <h1>充值</h1>
-            <form action="" id="rechargeForm">
-                <div class="formItem">
-                    <span>余额：</span>
-                    <span id="money"></span>元
-                </div>
-                <div class="formItem">
-                    <label for="rechargeMoney">充值金额：</label>
-                    <input type="text" id="rechargeMoney" name="money" placeholder="请输入充值金额">
-                </div>
-            </form>
-            <button class="rechargeBtn" onclick="recharge()">确认充值</button>
-        </div>
-
-        <div class="passwordContent" style="display: none">
-            <h1>修改密码</h1>
-            <form action="" id="changePassForm">
-                <div class="formItem">
-                    <label for="oldPassword">原密码：</label>
-                    <input type="password" id="oldPassword" name="oldpassword" placeholder="请输入原密码">
-                </div>
-                <div class="formItem">
-                    <label for="newPassword">新密码：</label>
-                    <input type="password" id="newPassword" name="password" placeholder="请输入新密码(最小为6位)">
-                </div>
-            </form>
-            <button class="changeBtn" onclick="changePassword()">确认修改</button>
-        </div>
+    <div class="manageBox">
+        <table>
+            <tr>
+                <td>商品名</td>
+                <td>分类</td>
+                <td>价格</td>
+                <td>库存</td>
+                <td>操作</td>
+            </tr>
+            <!-- <tr>
+                            <td>test</td>
+                            <td>1546</td>
+                            <td>1212</td>
+                            <td><button type="button" class="glyphicon glyphicon-edit" title="修改商品信息" pid='1231'></button>
+                                <button type="button" class="glyphicon glyphicon-trash" title="删除该商品"></button></td>
+                        </tr> -->
+        </table>
     </div>
     <script src="js/js.js"></script>
     <script>
-        function getUserInfo() {
-            var userinfo;
+        function showAllPro() {
             $.ajax({
-                url: '/shop/UserRequest',
-                type: 'POST',
-                async: false,
+                url: '/shop/AllProduct',
+                type: 'post',
                 success: function (data) {
                     var data = JSON.parse(data);
-                    userinfo = data;
-                },
-                error: function (data) {
-                    console.log(data);
+                    var cate = data.categroy;
+                    var text = '';
+                    for (var a in cate) {
+                        for (var i = 0; i < cate[a].length; i++) {
+                            var product = cate[a][i];
+                            text += '<tr>' +
+                                '<td>' + product.pname + '</td>' +
+                                '<td>' + product.cname + '</td>' +
+                                '<td>' + product.price + '</td>' +
+                                '<td>' + product.store + '</td>' +
+                                '<td><a href=\"changeDetail.html?pid=' + product.pid +
+                                '\" class="glyphicon glyphicon-edit" title="修改商品信息" pid=\"' + product.pid +
+                                '\"></a>' +
+                                '<button type="button" class="glyphicon glyphicon-trash" title="删除该商品" pid=\"' +
+                                product.pid + '\"></button></td>' +
+                                '</tr>';
+                        }
+                    }
+                    $('table').append(text);
+                    deleteProduct()
                 }
-            });
-            return userinfo;
+            })
         }
-        var userinfo = getUserInfo();
-        $('#sex').val(userinfo.sex);
-        $('#email').val(userinfo.email);
-        $('#phoneNumber').val(userinfo.telephone);
-        $('#postNumber').val(userinfo.postcode);
-        $('#address').val(userinfo.address);
-        $('#money').text(userinfo.money);
+        showAllPro();
 
-        function save() {
-            if (infoChangeValid()) {
+        // 删除商品
+        function deleteProduct() {
+            $('.glyphicon-trash').click(function () {
                 $.ajax({
-                    url: '/shop/UserUpdateInf',
-                    type: 'POST',
-                    data: $('#userinfoForm').serialize(),
+                    url: '/shop/DelProduct',
+                    type: 'post',
+                    data: 'pid=' + $(this).attr("pid"),
                     success: function (data) {
                         var data = JSON.parse(data);
                         if (data.state == 0) {
                             alert(data.message);
-                            location.href = 'login.html';
+                            location.href = 'adminLogin.html';
                         } else if (data.state == 1) {
                             alert(data.message);
                             location.reload();
                         } else if (data.state == 2) {
-                            alert('更新失败，请重试或联系管理员');
-                        }
-                    }
-                });
-            }
-        }
-
-        function infoChangeValid() {
-            var emailReg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.){1,63}[a-z0-9]+$/;
-            var phoneNumberReg = /^1[0-9]{10}/;
-            var postNumberReg = /^[1-9][0-9]{5}$/;
-            if (!emailReg.test(email.value)) {
-                alert('邮箱格式不正确');
-                return false;
-            } else if (!phoneNumberReg.test(phoneNumber.value)) {
-                alert('手机号码不正确');
-                return false;
-            } else if (!postNumberReg.test(postNumber.value)) {
-                alert('邮政编码不正确');
-                return false;
-            } else if (address.value == "") {
-                alert('地址不能为空');
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        function recharge() {
-            var money = $('#rechargeMoney').val();
-            var moneyReg = /^[1-9][0-9]*$/;
-            if (moneyReg.test(money)) {
-                $.ajax({
-                    url: '/shop/UserRecharge',
-                    type: 'POST',
-                    data: $('#rechargeForm').serialize(),
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.state == 0) {
-                            alert('充值失败，请重试或联系管理员');
-                        } else if (data.state == 1) {
                             alert(data.message);
-                            location.reload();
                         }
-                    }
-                });
-            } else {
-                alert('请输入正确的金额');
-            }
-
-        }
-
-        function changePassword() {
-            if ($('#newPassword').val().length < 6) {
-                alert('密码长度过短');
-            } else {
-                $.ajax({
-                    url: '/shop/UserUpdatePwd',
-                    type: 'POST',
-                    data: $('#changePassForm').serialize(),
-                    success: function(data){
-                        var data = JSON.parse(data);
+                    },
+                    error: function (data) {
                         console.log(data);
-                        
-
-                        if (data.state == 0) {
-                            alert(data.message);
-                            location.href = 'login.html';
-                        } else if (data.state == 1) {
-                            alert('更新成功，请重新登陆');
-                            location.href = 'login.html';
-                        } else if (data.state == 2) {
-                            alert('更新失败，请与管理员联系');
-                        } else if (data.state == 3) {
-                            alert(data.message);
-                        }
                     }
-                });
-            }
-
+                })
+            })
         }
-
-
-        $('#infoItem').click(function () {
-            $('.infoContent').css('display', 'block');
-            $('.rechargeContent').css('display', 'none');
-            $('.passwordContent').css('display', 'none');
-            $('.active').removeClass('active');
-            $(this).addClass('active');
-        });
-        $('#rechargeItem').click(function () {
-            $('.infoContent').css('display', 'none');
-            $('.rechargeContent').css('display', 'block');
-            $('.passwordContent').css('display', 'none');
-            $('.active').removeClass('active');
-            $(this).addClass('active');
-        });
-        $('#changePassItem').click(function () {
-            $('.infoContent').css('display', 'none');
-            $('.rechargeContent').css('display', 'none');
-            $('.passwordContent').css('display', 'block');
-            $('.active').removeClass('active');
-            $(this).addClass('active');
-        });
     </script>
 </body>
 
