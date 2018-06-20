@@ -92,6 +92,14 @@
         <servlet-name>AddProduct</servlet-name>
         <servlet-class>com.admin.AddProduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewAllIndent</servlet-name>
+        <servlet-class>com.admin.ViewAllIndent</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Shipment</servlet-name>
+        <servlet-class>com.admin.Shipment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserRegister</servlet-name>
         <url-pattern>/UserRegister</url-pattern>
@@ -183,6 +191,14 @@
     <servlet-mapping>
         <servlet-name>AddProduct</servlet-name>
         <url-pattern>/AddProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewAllIndent</servlet-name>
+        <url-pattern>/ViewAllIndent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Shipment</servlet-name>
+        <url-pattern>/Shipment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

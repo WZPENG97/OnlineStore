@@ -6,10 +6,10 @@
 package com.admin;
 
 import com.utils.DataSourceUtils;
-import com.utils.UUIDUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,18 +20,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.sf.json.JSONObject;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  *
  * @author LIGUANG
  */
-public class AddProduct extends HttpServlet {
+public class ViewAllIndent extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *添加商品
+     *管理员查看所有订单
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -42,19 +42,12 @@ public class AddProduct extends HttpServlet {
         request.setCharacterEncoding("UTF-8");    //设置接收编码
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(true);
-        String adminname=(String)session.getAttribute("adminname"); //从session里面获取管理员名
-        int pid=(int) (System.currentTimeMillis());                 //商品id
-        String pname=request.getParameter("pname");                 //商品名字
-//      String pname="1651651";                 //商品名字测试
-        String price=request.getParameter("price");                 //商品价格
-        String cid=null;                                            //商品类别id
-        String cname=request.getParameter("cname");                 //类别名称
-//      String cname="游戏周边";                 //类别名称测试
-        String store=request.getParameter("store");                 //库存
-        String description=request.getParameter("description");        //商品描述
-        String pimage="images/"+pname+".jpg";
+        String adminname=(String)session.getAttribute("adminname");
+
         String jsonstr=null;           //用于写json
-        
+        QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());//连接数据库
+        String sql ="select * from indent;";//sql语句
+
         if(adminname==null)
         {
         jsonstr="{'state':0,\"message\":\""+"非管理员禁止操作该页面"+"\"}";
@@ -62,48 +55,17 @@ public class AddProduct extends HttpServlet {
         response.getWriter().println(json);
         }
         else
-        { 
-            if(cname=="化妆用品")
-            {
-            cid="1";
-            }else if(cname=="生活用品")
-            {
-            cid="2";
-            }else if(cname=="书籍办公")
-            {
-            cid="3";  
-            }else if(cname=="数码产品")
-            {
-            cid="4";
-            }else if(cname=="衣服配饰")
-            {
-            cid="5";
-            }else if(cname=="运动用品")
-            {
-            cid="6";
-            }
-            else if(cname=="游戏周边")
-            {
-            cid="7";
-            }
-        QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库   
-        String sql ="insert into product values(?,?,?,?,?,?,?,?);"; //sql语句
-              /*执行sql语句，利用json向前端传递数据
-              * 若无异常则为注册成功，
-              *若有异常抛出则数据库已有该用户名请重新输入用户名 
-              */
-        try{              
-              qr.update(sql,Integer.toString(pid),pname,price,cid,cname,store,description,pimage);
-//              qr.update(sql,Integer.toString(pid),pname,"15616",cid,cname,"1561","1616516",pimage);
-              jsonstr="{\"state\":1,\"message\":\""+"添加成功"+"\"}";   //"{\"message\":\""+message+"\"}"
-              JSONObject json = JSONObject.fromObject(jsonstr);
-              response.getWriter().println(json);
-        }catch(Exception e)
         {
-              jsonstr="{\"state\":2,\"message\":\""+"添加失败"+"\"}";   //"{\"message\":\""+message+"\"}"
-              JSONObject json = JSONObject.fromObject(jsonstr);
-              response.getWriter().println(json);
-       }
+        /*
+        *从数据库中查询所有订单
+        *MapListHandler, 将查询结果的每一条记录封装map集合,将每一个map集合放入list中返回
+        *然后转换成json数据
+        */
+        
+        List<Map<String, Object>> mapList1 = qr.query(sql, new MapListHandler());
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.put("AllIndent", mapList1);       
+        response.getWriter().println(jsonObject2);
         }
     }
 
@@ -122,7 +84,7 @@ public class AddProduct extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(AddProduct.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewAllIndent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -140,7 +102,7 @@ public class AddProduct extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(AddProduct.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewAllIndent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
