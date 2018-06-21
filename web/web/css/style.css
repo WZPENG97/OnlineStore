@@ -2,7 +2,7 @@
  * @Author: WZPENG 
  * @Date: 2018-06-02 19:41:38 
  * @Last Modified by: WZPENG
- * @Last Modified time: 2018-06-21 11:15:15
+ * @Last Modified time: 2018-06-21 22:55:16
  */
 
 /* base style */
@@ -215,6 +215,9 @@ html,body{
  .productItem span{
      font-size: 24px;
      color: #b92c28;
+ }
+ .productItem img{
+     width: 100%;
  }
 .productGroup img{
     width: 280px;

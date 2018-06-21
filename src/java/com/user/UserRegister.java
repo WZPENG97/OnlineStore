@@ -48,15 +48,16 @@ public class UserRegister extends HttpServlet {
         String postcode=request.getParameter("postcode");   //获取邮编
         String address=request.getParameter("address");     //获取地址
         String jsonstr=null;     //用于写json
+        String money="0";
         
         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库   
-        String sql ="insert into user values(?,?,?,?,?,?,?);"; //sql语句
+        String sql ="insert into user values(?,?,?,?,?,?,?,?);"; //sql语句
               /*执行sql语句，利用json向前端传递数据
               * 若无异常则为注册成功，
               *若有异常抛出则数据库已有该用户名请重新输入用户名 
               */
         try{              
-              qr.update(sql,username,password,sex,email,telephone,postcode,address);
+              qr.update(sql,username,password,sex,email,telephone,postcode,address,money);
               jsonstr="{\"state\":1,\"message\":\""+"注册成功"+"\"}";   //"{\"message\":\""+message+"\"}"
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
