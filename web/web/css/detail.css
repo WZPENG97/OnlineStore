@@ -1,56 +1,23 @@
-/*nav*/
-a{
-	text-decoration: none;
-}
-.nav{
-    width: 100%;
-    height: 50px;
-    background-color: #f3f3f3;
-    line-height: 50px;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-.navMain{
-    float: right;
-}
-.logo{
-    font-size: 20px;
-    color: #777;
-    margin-left: 20px;
-}
-.searchBox{
-    width: 180px;
-    height: 30px;
-    border-radius: 10px;
-    outline: none;
-    border: 1px solid #ccc;
-    text-indent: 10px;
-}
-.searchBtn{
-    width: 80px;
-    height: 30px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    outline: none;
-    cursor: pointer;
-}
-.searchBtn:hover{
-    background-color: #ccc;
-}
-.register{
-    margin: 0 20px;
-}
-.login{
-    margin-right: 20px;
-}
+
+
 /**/
-#name{
-	margin-top: 100px;
+.information,.describe{
+	width: 80%;margin: auto;overflow: hidden;
 }
-#div1,#div2{
-	width:50%;float: left;margin-top: 10px;
+
+#image,#msg{
+	width:50%;float: left;margin-top: 30px;
+}
+#image img{
+    width:100%;
+/*    
+    width: auto;
+    max-height:400px;*/
+  
+}
+/* 产品信息 */
+#name{
+	margin-top: 30px;
 }
 #item{
 	border-top: 1px solid #ddd;margin-left: 20px;overflow: hidden;
@@ -61,11 +28,71 @@ a{
 #part1{
 	font-weight:600;
 }
+#down,#up{
+	margin-top: 10px;
+}
 #add,#buy{
+	margin-top: 15px;
 	width: 150px;
 	height: 40px;
 	border-radius: 5px;
-	background: #d9534f;
+	background: #e4393c;
 	color: white;
 }
+/*商品描述*/
+#names{
+	background-color: #e4e3e3;border: 1px solid #d4d3d3; border-bottom: 1px solid #e4393c;margin-top: 30px;
+}
+#names .mui-segmented-control{
+	width: 300px;
+	border: none;
 
+}
+#names a{
+	color: black;
+}
+#names a:hover{
+	color: #e4393c;
+}
+#names .mui-segmented-control .mui-control-item{
+	border-left: none;
+}
+
+#names .mui-segmented-control .mui-control-item.mui-active {
+    color: #fff;
+    background-color: #e4393c;
+}
+#texts .mui-content-paddeds{
+    height: 200px;
+}
+/*底部空白*/
+.bottom{
+    width:100%;height:50px;
+}
+
+#down,#up{
+	width: 30px;
+	height: 30px;
+}
+#gDecribe div{
+	margin: 20px;
+}
+#msg{
+	padding-top: 100px;
+}
+
+.commentBox{
+	width: 100%;
+	min-height: 100px;
+	padding:10px 10px 0 10px;
+	position: relative;
+	border-bottom: 1px solid #ccc;
+}
+.commentInfo{
+	font-size: 14px;
+	text-align: right;
+	position: absolute;
+	bottom: 5px;
+	right: 0;
+	color: #222;
+}

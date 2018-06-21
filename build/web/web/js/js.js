@@ -391,7 +391,7 @@ function showIndent() {
                             '<td>' + indent[i].counts + '</td>' +
                             '<td>' + indent[i].ctime + '</td>' +
                             '<td>' + indent[i].indentsta + '</td>' +
-                            '<td><button type=\"button\" onclick=\"showComment(' + indent[i].pid + ')\" class="glyphicon glyphicon-pencil btn"  title=\"评论\"></button></td>' +
+                            '<td><button type=\"button\" onclick=\"showComment(\'' + indent[i].pid + '\',\''+ indent[i].indentid + '\')\" class="glyphicon glyphicon-pencil btn"  title=\"评论\"></button></td>' +
                             '</tr>';
                     } else {
                         text += '<tr>' +
@@ -437,19 +437,23 @@ function reciveProduct(id) {
 }
 
 //show comment panner
-function showComment(id) {
+function showComment(pid,indentid) {
     $('.comment').addClass('show');
     $('.shadow').addClass('show');
-    comment(id);
+    comment(pid,indentid);
 }
 
 //comment function
-function comment(id) {
+function comment(pid,indentid) {
     $('.commentBtn').click(function () {
         $.ajax({
             url: '/shop/UserComment',
             type: 'post',
-            data: 'pid=' + id + '&comment=' + $('#comment').val(),
+            data: {
+                pid:pid,
+                indentid:indentid,
+                comment:$('#comment').val()
+            },
             success: function (data) {
                 var data = JSON.parse(data);
                 if (data.state == 0) {

@@ -54,7 +54,7 @@ public class ShowIndent extends HttpServlet {
         }
         else{
         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库   
-        String sql ="select * from indent where username=?;"; //sql语句
+        String sql ="select * from indent where username=? order by ctime desc;"; //sql语句
         /*
         *从数据库中查询购物车数据
         *MapListHandler, 将查询结果的每一条记录封装map集合,将每一个map集合放入list中返回

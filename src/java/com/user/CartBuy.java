@@ -68,13 +68,14 @@ public class CartBuy extends HttpServlet {
         String pname=null;                      //获取商品名字
         String price=null;                      //获取商品价格
        // String counts="1";                    //获取商品数量测试
+        String store=null;                      //更新库存
         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库 
         String sql1 ="select * from product where pid=?"; //sql语句
         String sql2 ="select * from user where username=?"; //sql语句
         String sql3 ="update user set money=? where username=?"; //sql语句
         String sql5  ="delete from shopping_cart  where pid=? and username=? "; //sql语句
         Map<String, Object> map1 = qr.query(sql2, new MapHandler(),username);
-        String money=map1.get("money").toString();               //获取钱
+        String money=map1.get("money").toString();               //获取用户的钱
         /*
         *计算总价格
         */
@@ -83,8 +84,8 @@ public class CartBuy extends HttpServlet {
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
         }else{
-            for(int i =0 ; i<paramValues.length;i++)
-                {
+        for(int i =0 ; i<paramValues.length;i++)
+        {
         String pid=paramValues[i];              //获取商品id
         String counts=request.getParameter("counts");   //获取商品数量
         Map<String, Object> map = qr.query(sql1, new MapHandler(),pid);
@@ -104,14 +105,17 @@ public class CartBuy extends HttpServlet {
                 String pid=paramValues[i];              //获取商品id
                 String counts=request.getParameter("counts");   //获取商品数量
                 Map<String, Object> map = qr.query(sql1, new MapHandler(),pid);
-                pname=map.get("pname").toString();
-                price=map.get("price").toString();
+                pname=map.get("pname").toString();          //获取商品名字
+                price=map.get("price").toString();          //获取价格
+                store=map.get("store").toString();          //获取库存
                 float  cprice=Float.parseFloat(price)*Float.parseFloat(counts);
+                int newstore=Integer.parseInt(store)-Integer.parseInt(counts);
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                 String  ctime=df.format(new Date());       // new Date()为获取当前系统时间
                 String indentsta="待发货";  
                 float newmoney=Float.parseFloat(money)-allprice;   //计算差额
-                String sql4 ="insert into indent value(?,?,?,?,?,?,?,?);"; //sql语句
+                String sql4 ="insert into indent value(?,?,?,?,?,?,?,?);"; //sql语句插入订单
+                String sql6 ="update product set store=? where pid=?";     //更新库存
               /*执行sql语句，利用json向前端传递数据
               * 若无异常则为购买商品成功，
               *若有异常抛出则购买失败 
@@ -120,6 +124,7 @@ public class CartBuy extends HttpServlet {
               qr.update(sql4,indentid,username,pid,pname,counts,cprice,ctime,indentsta);
               //qr.update(sql,indentid,"11","1","电吹风","3","39.00",ctime,indentsta);  //测试
               qr.update(sql3,Float.toString(newmoney),username);
+              qr.update(sql6,Integer.toString(newstore),pid);
               jsonstr="{\"state\":1,\"message\":\""+"购买成功"+"\",\"allprice\":\""+allprice+"\"}";
               qr.update(sql5,pid,username);
               JSONObject json = JSONObject.fromObject(jsonstr);

@@ -1,62 +1,132 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-		<link rel="stylesheet" type="text/css" href="css/detail.css"/>
-		<script src="js/jquery-3.3.1.min.js"></script>
-		<style>
-			#div2:nth-child(5) .part2{
-				text-align: center;
-				font-size: 12px;
-				background-color: #000;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="app"style="margin: auto;width: 80%;">
-			<div class="nav">
-		        <a href="index.html" class="logo">网络商城</a>
-		        <div class="navMain">
-		            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
-		            <button class="searchBtn">查找商品</button>
-		            <a href="register.html" class="register">注册</a>
-		            <a href="login.html" class="login">登录</a>
-		        </div>
-		    </div>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<link rel="stylesheet" type="text/css" href="css/detail.css" />
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<link rel="stylesheet" href="css/mui.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+		#div2:nth-child(5) .part2 {
+			text-align: center;
+			font-size: 12px;
+			background-color: #000;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div class="nav">
+			<a href="index.html" class="logo">网络商城</a>
+			<div class="navMain">
+				<input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+				<button class="searchBtn">查找商品</button>
+				<span class="navOpt">
+					<a href="register.html" class="register">注册</a>
+					<a href="login.html" class="login">登录</a>
+				</span>
+				<ul class="user ">
+					<li class="username">
+						<span class="name"></span>
+						<span class="down"></span>
+					</li>
+					<ul class="userOpt">
+						<li>
+							<a href="javascript:;" id="shoppingCart">购物车</a>
+						</li>
+						<li>
+							<a href="javascript:;" id="indent">订单状态</a>
+						</li>
+						<li>
+							<a href="javascript:;" id="userInfo">个人信息</a>
+						</li>
+						<li>
+							<a href="javascript:logout();" id="logOut">注销登录</a>
+						</li>
+					</ul>
+				</ul>
+			</div>
+		</div>
+		<div class='information'>
 			<h1 id="name">{{product}}</h1>
 			<hr />
-			
-			<div id="div1">
-				<img style='width:100%' :src="img"/>
+
+			<div id="image">
+				<img :src="img" />
 			</div>
-			
-			<div id="div2">
-				<div id="item"v-for='item in items'>
+
+			<div id="msg">
+				<div id="item" v-for='item in items'>
 					<div id="part1">{{item.name}}</div>
-					<div id="part2">{{item.value}}</div>					
+					<div id="part2">{{item.value}}</div>
 				</div>
 				<div id="item">
 					<div id="part1">购买数量</div>
 					<div id="part2">
-						<button id='down'@click='down'>-</button>
+						<button id='down' @click='down'>-</button>
 						{{num}}
-						<button id='up'@click='up'>+</button>
-					</div>										
+						<button id='up' @click='up'>+</button>
+					</div>
 				</div>
 				<div id="item" style="border: none;margin-top: 15px;">
 					<div id="part1">
-						<button id='add'@click="add">添加购物车</button>
+						<button id='add' @click="add">添加购物车</button>
 					</div>
 					<div id="part2">
-						<button id='buy'@click='buy'>购买</button>
-					</div>						
+						<button id='buy' @click='buy'>购买</button>
+					</div>
 				</div>
 			</div>
 		</div>
-		
-		<script src='js/detail.js'></script>
-		<script src="js/js.js"></script>
-	</body>
+		<div class="describe">
+			<div id="names">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#gDecribe">商品描述</a>
+					<a class="mui-control-item " href="#gEvaluate">商品评价</a>
+				</div>
+			</div>
+
+			<div id="texts">
+				<div class="mui-content-padded">
+					<div id="gDecribe" class="mui-control-content mui-active">
+						<div v-for='content in lists[0].content'>{{content}}</div>
+					</div>
+					<div id="gEvaluate" class="mui-control-content">
+						<!-- <div v-for='comment in lists[1].content'>
+							<div style='fone-size:13px;color: #545151'>{{ comment.time}}</div>
+							{{comment.username}}:{{comment.comment}}
+							<hr style='margin-top: 5px;'>
+						</div> -->
+						<!-- <div class="commentBox">
+							<div class="commentContent">test</div>
+							<div class="commentInfo">
+									<p class="commentName">admin</p>
+									<p class="commentTime">2018-10-01 18:00:00</p>
+							</div>
+						</div> -->
+						<div class="commentBox" v-for='comment in lists[1].content'>
+							<div class="commentContent">{{comment.comment}}</div>
+							<div class="commentInfo">
+								<p class="commentName">{{comment.username}}</p>
+								<p class="commentTime">{{ comment.time}}</p>
+							</div>
+						</div>
+
+						<!--                                                    <div>{{comment.name}}:{{comment.comment}}</div>-->
+					</div>
+					<div id="gSecurity" class="mui-control-content">
+						{{lists[2].content}}
+					</div>
+				</div>
+			</div>
+		</div>
+	<script src="js/js.js"></script>
+	<script src="js/detail.js"></script>
+
+</body>
 </html>

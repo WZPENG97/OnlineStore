@@ -108,6 +108,10 @@
         <servlet-name>AdminAllProduct</servlet-name>
         <servlet-class>com.admin.AdminAllProduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AllComment</servlet-name>
+        <servlet-class>com.product.AllComment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserRegister</servlet-name>
         <url-pattern>/UserRegister</url-pattern>
@@ -215,6 +219,10 @@
     <servlet-mapping>
         <servlet-name>AdminAllProduct</servlet-name>
         <url-pattern>/AdminAllProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AllComment</servlet-name>
+        <url-pattern>/AllComment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
