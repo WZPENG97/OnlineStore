@@ -230,30 +230,35 @@ function addProduct() {
 //show all product in admin page
 function showAllPro() {
     $.ajax({
-        url: '/shop/AllProduct',
+        url: '/shop/AdminAllProduct',
         type: 'post',
         success: function (data) {
             var data = JSON.parse(data);
-            var cate = data.categroy;
-            var text = '';
-            for (var a in cate) {
-                for (var i = 0; i < cate[a].length; i++) {
-                    var product = cate[a][i];
-                    text += '<tr>' +
-                        '<td>' + product.pname + '</td>' +
-                        '<td>' + product.cname + '</td>' +
-                        '<td>' + product.price + '</td>' +
-                        '<td>' + product.store + '</td>' +
-                        '<td><a href=\"changeDetail.html?pid=' + product.pid +
-                        '\" class="glyphicon glyphicon-edit" title="修改商品信息" pid=\"' + product.pid +
-                        '\"></a>' +
-                        '<button type="button" class="glyphicon glyphicon-trash" title="删除该商品" pid=\"' +
-                        product.pid + '\"></button></td>' +
-                        '</tr>';
+            if (data.state == 0) {
+                alert(data.message);
+                location.href = 'adminLogin.html';
+            } else {
+                var cate = data.categroy;
+                var text = '';
+                for (var a in cate) {
+                    for (var i = 0; i < cate[a].length; i++) {
+                        var product = cate[a][i];
+                        text += '<tr>' +
+                            '<td>' + product.pname + '</td>' +
+                            '<td>' + product.cname + '</td>' +
+                            '<td>' + product.price + '</td>' +
+                            '<td>' + product.store + '</td>' +
+                            '<td><a href=\"changeDetail.html?pid=' + product.pid +
+                            '\" class="glyphicon glyphicon-edit" title="修改商品信息" pid=\"' + product.pid +
+                            '\"></a>' +
+                            '<button type="button" class="glyphicon glyphicon-trash" title="删除该商品" pid=\"' +
+                            product.pid + '\"></button></td>' +
+                            '</tr>';
+                    }
                 }
+                $('table').append(text);
+                deleteProduct();
             }
-            $('table').append(text);
-            deleteProduct();
         }
     })
 }
@@ -376,7 +381,17 @@ function showIndent() {
                             '<td>' + indent[i].counts + '</td>' +
                             '<td>' + indent[i].ctime + '</td>' +
                             '<td>' + indent[i].indentsta + '</td>' +
-                            '<td><button type=\"button\" tittle=\"确认收货\" onclick=\"reciveProduct(\'' + indent[i].indentid +'\')\" class="glyphicon glyphicon-check btn" disabled></button></td>' +
+                            '<td><button type=\"button\" onclick=\"reciveProduct(\'' + indent[i].indentid + '\')\" class="glyphicon glyphicon-check btn" disabled title=\"确认收货\"></button></td>' +
+                            '</tr>';
+                    } else if (indent[i].indentsta == '未评论') {
+                        text += '<tr>' +
+                            '<td>' + indent[i].indentid + '</td>' +
+                            '<td>' + indent[i].pname + '</td>' +
+                            '<td>' + indent[i].cprice + '</td>' +
+                            '<td>' + indent[i].counts + '</td>' +
+                            '<td>' + indent[i].ctime + '</td>' +
+                            '<td>' + indent[i].indentsta + '</td>' +
+                            '<td><button type=\"button\" onclick=\"showComment(' + indent[i].pid + ')\" class="glyphicon glyphicon-pencil btn"  title=\"评论\"></button></td>' +
                             '</tr>';
                     } else {
                         text += '<tr>' +
@@ -386,7 +401,7 @@ function showIndent() {
                             '<td>' + indent[i].counts + '</td>' +
                             '<td>' + indent[i].ctime + '</td>' +
                             '<td>' + indent[i].indentsta + '</td>' +
-                            '<td><button type=\"button\" tittle=\"确认收货\" onclick=\"reciveProduct(\'' + indent[i].indentid +'\')\" class="glyphicon glyphicon-check btn"></button></td>' +
+                            '<td><button type=\"button\" onclick=\"reciveProduct(\'' + indent[i].indentid + '\')\" class="glyphicon glyphicon-check btn" title=\"确认收货\"></button></td>' +
                             '</tr>';
                     }
                 }
@@ -419,6 +434,36 @@ function reciveProduct(id) {
             console.log(data);
         }
     });
+}
+
+//show comment panner
+function showComment(id) {
+    $('.comment').addClass('show');
+    $('.shadow').addClass('show');
+    comment(id);
+}
+
+//comment function
+function comment(id) {
+    $('.commentBtn').click(function () {
+        $.ajax({
+            url: '/shop/UserComment',
+            type: 'post',
+            data: 'pid=' + id + '&comment=' + $('#comment').val(),
+            success: function (data) {
+                var data = JSON.parse(data);
+                if (data.state == 0) {
+                    alert('评论失败，请重试');
+                } else if (data.state == 1) {
+                    alert(data.message);
+                    location.reload();
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        })
+    })
 }
 
 //show all indent in admin page
@@ -740,7 +785,7 @@ function changePassword() {
             url: '/shop/UserUpdatePwd',
             type: 'POST',
             data: $('#changePassForm').serialize(),
-            success: function(data){
+            success: function (data) {
                 var data = JSON.parse(data);
                 if (data.state == 0) {
                     alert(data.message);

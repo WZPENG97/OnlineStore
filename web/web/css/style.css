@@ -2,7 +2,7 @@
  * @Author: WZPENG 
  * @Date: 2018-06-02 19:41:38 
  * @Last Modified by: WZPENG
- * @Last Modified time: 2018-06-21 00:22:07
+ * @Last Modified time: 2018-06-21 11:15:15
  */
 
 /* base style */
@@ -367,4 +367,50 @@ table th{
     color: #fff;
     border:none;
     cursor: pointer;
+}
+
+.comment{
+    width: 500px;
+    height: 400px;
+    background-color: #fff; 
+    position: fixed;
+    top: 30%;
+    left: 35%;
+    z-index: 100;
+    display: none;
+}
+.shadow{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    background-color: #ccc;
+    opacity: 0.5;
+    display: none;
+}
+.comment h2{
+    text-align: center;
+}
+.comment textarea{
+    width: 90%;
+    height: 200px;
+    margin: 0 auto;
+    display: block;
+    resize: none;
+}
+.comment button{
+    width: 80%;
+    height: 50px;
+    color: #fff;
+    border: none;
+    background-color: rgb(51,122,183);
+    margin: 20px auto;
+    display: block;
+    border-radius: 20px;
+    outline: none;
+}
+.show{
+    display: block;
 }

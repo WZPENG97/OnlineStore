@@ -8,6 +8,8 @@ package com.user;
 import com.utils.DataSourceUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +22,12 @@ import org.apache.commons.dbutils.QueryRunner;
  *
  * @author LIGUANG
  */
-public class ReceiveProduct extends HttpServlet {
+public class UserComment extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *用户接收货物模块
+     *用户评论模块
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -33,39 +35,39 @@ public class ReceiveProduct extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");    //设置接收编码
+                    request.setCharacterEncoding("UTF-8");    //设置接收编码
         response.setContentType("text/html;charset=UTF-8");
+        
         HttpSession session = request.getSession(true);
-        String username=(String)session.getAttribute("username"); //从session里面获取管理员名
-        String indentid=request.getParameter("indentid");
-        String indentsta="未评论";
-
-        String jsonstr=null;           //用于写json
-        String sql ="update indent set indentsta=? where indentid=?;";//sql语句
-
-        if(username==null)
-        {
-        jsonstr="{'state':0,\"message\":\""+"请先登录"+"\"}";
-        JSONObject json = JSONObject.fromObject(jsonstr);
-        response.getWriter().println(json);
-        }
-        else
-        { 
-         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库 
-          try{              
-              qr.update(sql,indentsta,indentid); 
-//              qr.update(sql,indentsta,"111"); //测试
-              jsonstr="{\"state\":1,\"message\":\""+"收货成功"+"\"}";   
+        String username=(String) session.getAttribute("username");   //从session里面获取用户名
+        String pid =request.getParameter("pid");
+        String comment=request.getParameter("comment");
+        String jsonstr=null;                        //用于写json数据
+        QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库   
+        String sql ="insert into comment value(?,?,?,?);"; //sql语句
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String  time=df.format(new Date());       // new Date()为获取当前系统时间
+                
+        System.out.println(time);
+              /*执行sql语句，利用json向前端传递数据
+              * 若无异常则为评论成功，
+              *若有异常抛出则失败
+              */
+        try{              
+              qr.update(sql,pid,username,comment,time);
+            // qr.update(sql,"11","admin","1111111",time);  //测试
+              jsonstr="{\"state\":1,\"message\":\""+"评论成功"+"\"}";;
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
         }catch(Exception e)
         {
-              jsonstr="{\"state\":2,\"message\":\""+"服务器异常，请稍后操作"+"\"}";   
+              jsonstr="{\"state\":0,\"message\":\""+"评论失败"+"\"}";;
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
        }
-            
-        }
+        
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -100,6 +100,14 @@
         <servlet-name>Shipment</servlet-name>
         <servlet-class>com.admin.Shipment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserComment</servlet-name>
+        <servlet-class>com.user.UserComment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminAllProduct</servlet-name>
+        <servlet-class>com.admin.AdminAllProduct</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserRegister</servlet-name>
         <url-pattern>/UserRegister</url-pattern>
@@ -199,6 +207,14 @@
     <servlet-mapping>
         <servlet-name>Shipment</servlet-name>
         <url-pattern>/Shipment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserComment</servlet-name>
+        <url-pattern>/UserComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminAllProduct</servlet-name>
+        <url-pattern>/AdminAllProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
