@@ -46,7 +46,7 @@ public class ViewAllIndent extends HttpServlet {
 
         String jsonstr=null;           //用于写json
         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());//连接数据库
-        String sql ="select * from indent;";//sql语句
+        String sql ="select * from indent order by ctime desc;";//sql语句
 
         if(adminname==null)
         {

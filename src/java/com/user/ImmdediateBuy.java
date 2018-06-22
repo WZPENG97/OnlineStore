@@ -80,6 +80,14 @@ public class ImmdediateBuy extends HttpServlet {
         String  ctime=df.format(new Date());       // new Date()为获取当前系统时间
         String indentsta="待发货";  
 
+        if("0".equals(store))
+        {
+            jsonstr="{\"state\":5,\"message\":\""+"该商品缺货"+"\",\"pname\":\""+pname+"\"}";
+            JSONObject json = JSONObject.fromObject(jsonstr);
+            response.getWriter().println(json);
+        }
+        else
+        {
         if(cprice-Float.parseFloat(money)<=0)
         {
                float newmoney=Float.parseFloat(money)-cprice;   //计算差额
@@ -88,7 +96,7 @@ public class ImmdediateBuy extends HttpServlet {
                int newstore=Integer.parseInt(store)-Integer.parseInt(counts);
               /*执行sql语句，利用json向前端传递数据
               * 若无异常则为购买商品成功，
-              *若有异常抛出则添加失败 
+              *
               */
         try{              
               qr.update(sql4,indentid,username,pid,pname,counts,cprice,ctime,indentsta);
@@ -112,7 +120,7 @@ public class ImmdediateBuy extends HttpServlet {
             JSONObject json = JSONObject.fromObject(jsonstr);
             response.getWriter().println(json);
         }
-        
+        }
         }
         
     }

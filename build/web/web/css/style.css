@@ -2,7 +2,7 @@
  * @Author: WZPENG 
  * @Date: 2018-06-02 19:41:38 
  * @Last Modified by: WZPENG
- * @Last Modified time: 2018-06-21 22:55:16
+ * @Last Modified time: 2018-06-22 15:23:32
  */
 
 /* base style */
@@ -178,6 +178,20 @@ html,body{
     color: #555
 }
  /* index main style */
+ .welcome{
+     width: 80%;
+     height: 250px;
+     background-color:#eee;
+     border-radius: 20px;
+     font-size: 50px;
+     box-sizing: border-box;
+     padding: 40px 20px;
+ }
+ .titleDec{
+     font-size: 30px;
+     color: #aaa;
+ }
+ 
  .mainContent{
      width: 100%;
      position: fixed;

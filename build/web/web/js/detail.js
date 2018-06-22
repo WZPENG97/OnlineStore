@@ -97,6 +97,8 @@ var app = new Vue({
                         }else if(data.state==1){
                             alert(data.message);
                             location.reload();
+                        }else if(data.state==5){
+                            alert(data.message);
                         }
                     },
                     error: function (data) {

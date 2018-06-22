@@ -656,6 +656,8 @@ function buy() {
             } else if (data.state == 1) {
                 alert('购买成功');
                 location.reload();
+            }else if (data.state == 5) {
+                alert(data.message);
             }
         }
     });
