@@ -62,9 +62,9 @@ public class CartBuy extends HttpServlet {
 //                
 //            }
         String[] paramValues = request.getParameterValues("checkbox1");
+        String[] counts=request.getParameterValues("counts");   //获取商品数量
         float allprice=0;                                 //计算多种商品总价格
         //Integer.parseInt() 把String转换为int
-        String indentid=UUIDUtils.getId();       //生成订单id
         String pname=null;                      //获取商品名字
         String price=null;                      //获取商品价格
        // String counts="1";                    //获取商品数量测试
@@ -87,10 +87,11 @@ public class CartBuy extends HttpServlet {
         for(int i =0 ; i<paramValues.length;i++)
         {
         String pid=paramValues[i];              //获取商品id
-        String counts=request.getParameter("counts");   //获取商品数量
+        String countsValue = counts[i];
+//        String counts=request.getParameter("counts");   //获取商品数量
         Map<String, Object> map = qr.query(sql1, new MapHandler(),pid);
         price=map.get("price").toString();
-        float  cprice=Float.parseFloat(price)*Float.parseFloat(counts);
+        float  cprice=Float.parseFloat(price)*Float.parseFloat(countsValue);
         allprice+=cprice;
         }
         
@@ -100,16 +101,18 @@ public class CartBuy extends HttpServlet {
         */
         if(Float.parseFloat(money)-allprice>=0)
         {
+         try{
             for(int i =0 ; i<paramValues.length;i++)
             {
+                String indentid=UUIDUtils.getId();       //生成订单id
                 String pid=paramValues[i];              //获取商品id
-                String counts=request.getParameter("counts");   //获取商品数量
+                String countsValue = counts[i];   //获取商品数量
                 Map<String, Object> map = qr.query(sql1, new MapHandler(),pid);
                 pname=map.get("pname").toString();          //获取商品名字
                 price=map.get("price").toString();          //获取价格
                 store=map.get("store").toString();          //获取库存
-                float  cprice=Float.parseFloat(price)*Float.parseFloat(counts);
-                int newstore=Integer.parseInt(store)-Integer.parseInt(counts);
+                float  cprice=Float.parseFloat(price)*Float.parseFloat(countsValue);
+                int newstore=Integer.parseInt(store)-Integer.parseInt(countsValue);
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                 String  ctime=df.format(new Date());       // new Date()为获取当前系统时间
                 String indentsta="待发货";  
@@ -117,26 +120,25 @@ public class CartBuy extends HttpServlet {
                 String sql4 ="insert into indent value(?,?,?,?,?,?,?,?);"; //sql语句插入订单
                 String sql6 ="update product set store=? where pid=?";     //更新库存
               /*执行sql语句，利用json向前端传递数据
-              * 若无异常则为购买商品成功，
-              *若有异常抛出则购买失败 
-              */
-        try{              
-              qr.update(sql4,indentid,username,pid,pname,counts,cprice,ctime,indentsta);
+              * 
+              */             
+              qr.update(sql4,indentid,username,pid,pname,countsValue,cprice,ctime,indentsta);
               //qr.update(sql,indentid,"11","1","电吹风","3","39.00",ctime,indentsta);  //测试
               qr.update(sql3,Float.toString(newmoney),username);
               qr.update(sql6,Integer.toString(newstore),pid);
-              jsonstr="{\"state\":1,\"message\":\""+"购买成功"+"\",\"allprice\":\""+allprice+"\"}";
               qr.update(sql5,pid,username);
+           }
+              jsonstr="{\"state\":1,\"message\":\""+"购买成功"+"\",\"allprice\":\""+allprice+"\"}";
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
-           }
+         }
         catch(Exception e)
         {
             
               jsonstr="{\"state\":3,\"message\":\""+"数据库异常，请联系管理员"+"\"}";
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
-        }
+              System.out.println(e);
         }
         }
         else
