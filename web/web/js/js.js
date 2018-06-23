@@ -373,7 +373,7 @@ function showIndent() {
                 var indent = data.indent;
                 var text = '';
                 for (var i = 0; i < indent.length; i++) {
-                    if (indent[i].indentsta == '已完成') {
+                    if (indent[i].indentsta == '已完成'|| indent[i].indentsta == '待发货') {
                         text += '<tr>' +
                             '<td>' + indent[i].indentid + '</td>' +
                             '<td>' + indent[i].pname + '</td>' +

@@ -47,6 +47,9 @@ public class CartBuy extends HttpServlet {
         HttpSession session = request.getSession(false);
         String username=(String) session.getAttribute("username");   //从session里面获取用户名
         String jsonstr=null;                                 //用于写json 
+        int flag=0;                                        //用于判断缺货状态
+        String temp_pname=null;
+        
         
         if(username==null)
         {
@@ -81,8 +84,8 @@ public class CartBuy extends HttpServlet {
         */
         if(paramValues==null){
             jsonstr="{\"state\":2,\"message\":\""+"未选择商品"+"\"}";
-              JSONObject json = JSONObject.fromObject(jsonstr);
-              response.getWriter().println(json);
+            JSONObject json = JSONObject.fromObject(jsonstr);
+            response.getWriter().println(json);
         }else{
         for(int i =0 ; i<paramValues.length;i++)
         {
@@ -94,11 +97,35 @@ public class CartBuy extends HttpServlet {
         float  cprice=Float.parseFloat(price)*Float.parseFloat(countsValue);
         allprice+=cprice;
         }
-        
+        for(int i =0 ; i<paramValues.length;i++)
+        {
+                String pid=paramValues[i];              //获取商品id
+                Map<String, Object> map = qr.query(sql1, new MapHandler(),pid);
+                store=map.get("store").toString();          //获取库存
+                pname=map.get("pname").toString();
+                int newstore=Integer.parseInt(store)-Integer.parseInt(counts[i]);
+                if(newstore<=0)
+                {
+                    flag=0;
+                    temp_pname=pname;
+                    break;
+                }else
+                {
+                    flag=1;
+                }
+        }
         
         /*
         *写进订单
         */
+        if(flag==0)
+        {
+                 jsonstr="{\"state\":5,\"message\":\""+"你选的商品中"+temp_pname+"属于缺货状态"+"\"}";
+                 JSONObject json = JSONObject.fromObject(jsonstr);
+                 response.getWriter().println(json);
+        }
+        else
+        {
         if(Float.parseFloat(money)-allprice>=0)
         {
          try{
@@ -111,14 +138,6 @@ public class CartBuy extends HttpServlet {
                 pname=map.get("pname").toString();          //获取商品名字
                 price=map.get("price").toString();          //获取价格
                 store=map.get("store").toString();          //获取库存
-                if("0".equals(store))
-                {
-                    jsonstr="{\"state\":5,\"message\":\""+"该商品缺货"+"\",\"pname\":\""+pname+"\"}";
-                    JSONObject json = JSONObject.fromObject(jsonstr);
-                    response.getWriter().println(json);
-                    continue;
-                }else
-                {
                 float  cprice=Float.parseFloat(price)*Float.parseFloat(countsValue);
                 int newstore=Integer.parseInt(store)-Integer.parseInt(countsValue);
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -136,7 +155,6 @@ public class CartBuy extends HttpServlet {
               qr.update(sql6,Integer.toString(newstore),pid);
               qr.update(sql5,pid,username);
               }
-           }
               jsonstr="{\"state\":1,\"message\":\""+"购买成功"+"\",\"allprice\":\""+allprice+"\"}";
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
@@ -155,6 +173,7 @@ public class CartBuy extends HttpServlet {
             jsonstr="{\"state\":4,\"message\":\""+"余额不足"+"\"}";
             JSONObject json = JSONObject.fromObject(jsonstr);
             response.getWriter().println(json);
+        }
         }
         }
         }

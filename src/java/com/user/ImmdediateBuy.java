@@ -80,9 +80,10 @@ public class ImmdediateBuy extends HttpServlet {
         String  ctime=df.format(new Date());       // new Date()为获取当前系统时间
         String indentsta="待发货";  
 
-        if("0".equals(store))
+        int new_store=Integer.parseInt(store)-Integer.parseInt(counts);
+        if(new_store<=0)
         {
-            jsonstr="{\"state\":5,\"message\":\""+"该商品缺货"+"\",\"pname\":\""+pname+"\"}";
+            jsonstr="{\"state\":5,\"message\":\""+"你选的商品"+pname+"属于缺货状态"+"\"}";
             JSONObject json = JSONObject.fromObject(jsonstr);
             response.getWriter().println(json);
         }

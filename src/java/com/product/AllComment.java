@@ -44,7 +44,7 @@ public class AllComment extends HttpServlet {
         String pid=request.getParameter("pid");      //获取商品id
         String jsonstr=null;                        //用于写json数据
         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库   
-        String sql ="select * from comment where pid=?;"; //sql语句
+        String sql ="select * from comment where pid=? order by time desc;"; //sql语句
         List<Map<String, Object>> mapList = qr.query(sql, new MapListHandler(),pid);//测试
 //        List<Map<String, Object>> mapList = qr.query(sql, new MapListHandler(),"11");//测试
         
