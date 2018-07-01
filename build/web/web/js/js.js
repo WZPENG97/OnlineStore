@@ -208,23 +208,38 @@ function categroyText(categroy) {
 
 //add new product
 function addProduct() {
+    var form = new FormData($('#addProductForm'));
+    console.log(form);
     $.ajax({
-        url: '/shop/AddProduct',
-        type: 'post',
-        data: $('#addProductForm').serialize(),
-        success: function (data) {
-            var data = JSON.parse(data);
-            if (data.state == 0) {
-                alert('请先登录管理员帐号');
-                location.href = 'adminLogin.html';
-            } else if (data.state == 1) {
-                alert(data.message);
-                location.href = 'admin.html';
-            } else if (data.state == 2) {
-                alert(data.message);
-            }
+        url:'/shop/AddProduct',
+        type:'post',
+        data: form,
+        processData:false,
+        contentType:false,
+        success:function(data){
+            console.log(data);
+        },
+        error:function(data){
+            console.log(data);
         }
     })
+    // $.ajax({
+    //     url: '/shop/AddProduct',
+    //     type: 'post',
+    //     data: $('#addProductForm').serialize(),
+    //     success: function (data) {
+    //         var data = JSON.parse(data);
+    //         if (data.state == 0) {
+    //             alert('请先登录管理员帐号');
+    //             location.href = 'adminLogin.html';
+    //         } else if (data.state == 1) {
+    //             alert(data.message);
+    //             location.href = 'admin.html';
+    //         } else if (data.state == 2) {
+    //             alert(data.message);
+    //         }
+    //     }
+    // })
 }
 
 //show all product in admin page

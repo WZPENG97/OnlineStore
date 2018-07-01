@@ -1,3 +1,6 @@
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,11 +16,15 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import net.sf.json.JSONObject;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
@@ -26,8 +33,9 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  *
  * @author LIGUANG
  */
+@MultipartConfig(location="D:\\images\\")   //上传文件的存放路径
 public class AddProduct extends HttpServlet {
-
+     private String fileNameExtractorRegex="filename=\".+\"";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -89,13 +97,29 @@ public class AddProduct extends HttpServlet {
         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource()); //连接数据库   
         String sql ="insert into product values(?,?,?,?,?,?,?,?);"; //sql语句
               /*执行sql语句，利用json向前端传递数据
-              * 若无异常则为注册成功，
-              *若有异常抛出则数据库已有该用户名请重新输入用户名 
+              * 若无异常则插入成功，
+              *
               */
         try{              
               qr.update(sql,Integer.toString(pid),pname,price,cid,cname,store,description,pimage);
 //              qr.update(sql,Integer.toString(pid),pname,"15616",cid,cname,"1561","1616516",pimage);
               jsonstr="{\"state\":1,\"message\":\""+"添加成功"+"\"}";   //"{\"message\":\""+message+"\"}"
+              PrintWriter out = response.getWriter();
+        try {
+            String path=this.getServletContext().getRealPath("/");
+            for(Part p:request.getParts())
+            {
+               if(p.getContentType().contains("image"))
+               {
+                    String fname=getFileName(p);
+                    p.write(fname);
+               } 
+            }
+            }
+        finally
+        {
+            out.close();
+        } 
               JSONObject json = JSONObject.fromObject(jsonstr);
               response.getWriter().println(json);
         }catch(Exception e)
@@ -154,4 +178,15 @@ public class AddProduct extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+        private String getFileName(Part part) {
+        String contentDesc=part.getHeader("content-disposition");
+        String fileName=null;
+        Pattern pattern=Pattern.compile(fileNameExtractorRegex);
+        Matcher matcher=pattern.matcher(contentDesc);
+        if(matcher.find()){
+            fileName=matcher.group();
+            fileName=fileName.substring(10, fileName.length()-1);
+        }
+        return fileName;
+    }
 }
