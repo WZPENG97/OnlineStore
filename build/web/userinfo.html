@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>网络商城</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="index.html" class="logo">网络商城</a>
+        <div class="navMain">
+            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+            <button class="searchBtn">查找商品</button>
+            <span class="navOpt">
+                <a href="register.html" class="register">注册</a>
+                <a href="login.html" class="login">登录</a>
+            </span>
+            <ul class="user ">
+                <li class="username">
+                    <span class="name"></span>
+                    <span class="down"></span>
+                </li>
+                <ul class="userOpt">
+                    <li>
+                        <a href="javascript:;" id="shoppingCart">购物车</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="indent">订单状态</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="userInfo">个人信息</a>
+                    </li>
+                    <li>
+                        <a href="javascript:logout();" id="logOut">注销登录</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="aside">
+        <ul>
+            <li id="infoItem">
+                <a href="#1">个人信息</a>
+            </li>
+            <li id="rechargeItem">
+                <a href="#2">充值</a>
+            </li>
+            <li id="changePassItem">
+                <a href="#2">修改密码</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mainContent">
+        <div class="infoContent">
+            <form id="userinfoForm">
+                <h1 class="regTitle">个人信息修改</h1>
+                <div class="formItem">
+                    <label for="sex">性别：</label>
+                    <select name="sex" id="sex">
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+                <div class="formItem">
+                    <label for="email">邮箱：</label>
+                    <input type="text" id="email" name="email" placeholder="请输入邮箱地址">
+                </div>
+                <div class="formItem">
+                    <label for="phoneNumber">电话：</label>
+                    <input type="text" id="phoneNumber" name="telephone" placeholder="请输入手机号">
+                </div>
+                <div class="formItem">
+                    <label for="postNumber">邮编：</label>
+                    <input type="text" id="postNumber" name="postcode" placeholder="请输入邮政编码">
+                </div>
+                <div class="formItem">
+                    <label for="address">地址：</label>
+                    <input type="text" id="address" name="address" placeholder="请输入收货地址">
+                </div>
+            </form>
+            <button class="saveBtn" onclick="save()">保存</button>
+        </div>
+
+        <div class="rechargeContent" style="display: none">
+            <h1>充值</h1>
+            <form action="" id="rechargeForm">
+                <div class="formItem">
+                    <span>余额：</span>
+                    <span id="money"></span>元
+                </div>
+                <div class="formItem">
+                    <label for="rechargeMoney">充值金额：</label>
+                    <input type="text" id="rechargeMoney" name="money" placeholder="请输入充值金额">
+                </div>
+            </form>
+            <button class="rechargeBtn" onclick="recharge()">确认充值</button>
+        </div>
+
+        <div class="passwordContent" style="display: none">
+            <h1>修改密码</h1>
+            <form action="" id="changePassForm">
+                <div class="formItem">
+                    <label for="oldPassword">原密码：</label>
+                    <input type="password" id="oldPassword" name="oldpassword" placeholder="请输入原密码">
+                </div>
+                <div class="formItem">
+                    <label for="newPassword">新密码：</label>
+                    <input type="password" id="newPassword" name="password" placeholder="请输入新密码(最小为6位)">
+                </div>
+            </form>
+            <button class="changeBtn" onclick="changePassword()">确认修改</button>
+        </div>
+    </div>
+    <script src="js/js.js"></script>
+    <script>
+        showInfo()
+        $('#infoItem').click(function () {
+            $('.infoContent').css('display', 'block');
+            $('.rechargeContent').css('display', 'none');
+            $('.passwordContent').css('display', 'none');
+            $('.active').removeClass('active');
+            $(this).addClass('active');
+        });
+        $('#rechargeItem').click(function () {
+            $('.infoContent').css('display', 'none');
+            $('.rechargeContent').css('display', 'block');
+            $('.passwordContent').css('display', 'none');
+            $('.active').removeClass('active');
+            $(this).addClass('active');
+        });
+        $('#changePassItem').click(function () {
+            $('.infoContent').css('display', 'none');
+            $('.rechargeContent').css('display', 'none');
+            $('.passwordContent').css('display', 'block');
+            $('.active').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        landState();
+        searchBtn();
+    </script>
+</body>
+
+</html>

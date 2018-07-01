@@ -1,17 +1,106 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-        <h1>成功</h1>
-    </body>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>网络商城</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div class="nav">
+        <a href="index.html" class="logo">网络商城</a>
+        <div class="navMain">
+            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+            <button class="searchBtn">查找商品</button>
+            <span class="navOpt">
+                <a href="register.html" class="register">注册</a>
+                <a href="login.html" class="login">登录</a>
+            </span>
+            <ul class="user">
+                <li class="username"><span class="name"></span><span class="down"></span></li>
+                <ul class="userOpt">
+                    <li>
+                        <a href="javascript:;" id="shoppingCart">购物车</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="indent">订单状态</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="userInfo">个人信息</a>
+                    </li>
+                    <li>
+                        <a href="javascript:logout();" id="logOut">注销登录</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="aside">
+        <ul>
+            <li>
+                <a href="#1">衣服配饰</a>
+            </li>
+            <li>
+                <a href="#2">数码产品</a>
+            </li>
+            <li>
+                <a href="#3">书籍办公</a>
+            </li>
+            <li>
+                <a href="#4">游戏周边</a>
+            </li>
+            <li>
+                <a href="#5">生活用品</a>
+            </li>
+            <li>
+                <a href="#6">化妆用品</a>
+            </li>
+            <li>
+                <a href="#7">运动用品</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mainContent">
+        <div class="welcome">
+            <div class="title">欢迎来到网络商城</div>
+            <div class="titleDec"><marquee behavior="" direction="">享受你的购物之旅吧！（管理员联系方式：XXXXXXXX@gmail.com）</marquee></div>
+        </div>
+        <div class="productGroup" id="productClothes">
+            <h1 class="productTitle" id='1'>衣服配饰</h1>
+            <!-- <div class="productItem">
+                <img src="images/1.jpg" alt="product">
+                <p>疯狂Android讲义</p>
+                <span>&yen;</span><span>999</span>
+            </div> -->
+        </div>
+        <div class="productGroup" id="productDigital">
+            <h1 class="productTitle" id='2'>数码产品</h1>
+        </div>
+        <div class="productGroup" id="productBooks">
+            <h1 class="productTitle" id='3'>书籍办公</h1>
+        </div>
+        <div class="productGroup" id="productGame">
+            <h1 class="productTitle" id='4'>游戏周边</h1>
+        </div>
+        <div class="productGroup" id="productLife">
+            <h1 class="productTitle" id='5'>生活用品</h1>
+        </div>
+        <div class="productGroup" id="productMakeup">
+            <h1 class="productTitle" id='6'>化妆用品</h1>
+        </div>
+        <div class="productGroup" id="productSports">
+            <h1 class="productTitle" id='7'>运动用品</h1>
+        </div>
+    </div>
+    <script src="js/js.js"></script>
+    <script>
+        getAllProduct();
+        landState();
+        searchBtn()
+    </script>
+</body>
+
 </html>

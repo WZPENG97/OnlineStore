@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>网络商城-后台管理</title>
+    <link rel="stylesheet" href="css/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="admin.html" class="logo">网络商城-后台管理</a>
+        <ul class="option">
+            <li class="username">操作
+                <span class="down"></span>
+            </li>
+            <ul class="userOpt">
+                <li>
+                    <a href="indentManage.html">订单管理</a>
+                </li>
+                <li>
+                    <a href="addProduct.html">添加商品</a>
+                </li>
+            </ul>
+        </ul>
+    </div>
+
+    <div class="manageBox">
+        <table>
+            <tr>
+                <td>商品名</td>
+                <td>分类</td>
+                <td>价格</td>
+                <td>库存</td>
+                <td>操作</td>
+            </tr>
+            <!-- <tr>
+                            <td>test</td>
+                            <td>1546</td>
+                            <td>1212</td>
+                            <td><button type="button" class="glyphicon glyphicon-edit" title="修改商品信息" pid='1231'></button>
+                                <button type="button" class="glyphicon glyphicon-trash" title="删除该商品"></button></td>
+                        </tr> -->
+        </table>
+    </div>
+    <script src="js/js.js"></script>
+    <script>
+        showAllPro();
+    </script>
+</body>
+
+</html>

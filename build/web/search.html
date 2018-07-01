@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>网络商城-搜索</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="index.html" class="logo">网络商城</a>
+        <div class="navMain">
+            <input type="text" class="searchBox" name="commodity" placeholder="沐浴露" />
+            <button class="searchBtn">查找商品</button>
+            <span class="navOpt">
+                <a href="register.html" class="register">注册</a>
+                <a href="login.html" class="login">登录</a>
+            </span>
+            <ul class="user ">
+                <li class="username">
+                    <span class="name"></span>
+                    <span class="down"></span>
+                </li>
+                <ul class="userOpt">
+                    <li>
+                        <a href="javascript:;" id="shoppingCart">购物车</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="indent">订单状态</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" id="userInfo">个人信息</a>
+                    </li>
+                    <li>
+                        <a href="javascript:logout();" id="logOut">注销登录</a>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="searchContainer">
+        <input type="text" placeholder="疯狂Java讲义" class="searchInput">
+        <button class="searchStart">查找商品</button>
+        <div class="searchNote"></div>
+        <!-- <div class="productItem">
+             <img src="images/1.jpg" alt="product">
+            <p>疯狂Android讲义</p>
+            <span>&yen;</span><span>999</span>
+        </div> -->
+    </div>
+    <script src="js/js.js"></script>
+    <script>
+        landState();
+        search();
+        $('.searchStart')[0].addEventListener('click', function () {
+            location.href = 'search.html?value=' + $('.searchInput').val() || $('.searchInput').attr(
+                'placeholder');
+        });
+        searchBtn();
+    </script>
+</body>
+
+</html>
