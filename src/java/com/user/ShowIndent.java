@@ -61,8 +61,8 @@ public class ShowIndent extends HttpServlet {
         *然后判断是否为空来转换为相应的json数据
         */
 
-        //List<Map<String, Object>> mapList = qr.query(sql, new MapListHandler(),username);
-        List<Map<String, Object>> mapList = qr.query(sql, new MapListHandler(),"admin");//测试
+        List<Map<String, Object>> mapList = qr.query(sql, new MapListHandler(),username);
+        // List<Map<String, Object>> mapList = qr.query(sql, new MapListHandler(),"admin");//测试
         JSONObject jsonObject2 = new JSONObject();
         jsonObject2.put("indent", mapList);
         if("{\"indent\":[]}".equals(jsonObject2.toString()))
