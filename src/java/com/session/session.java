@@ -34,7 +34,7 @@ public class session extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");    //设置接收编码
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         String username=(String) session.getAttribute("username");
         
         String jsonstr=null;
