@@ -503,29 +503,33 @@ function showAllIndent() {
                 alert(data.message);
                 location.href = 'adminLogin.html';
             } else {
-                for (var i = 0; i < indent.length; i++) {
-                    if (indent[i].indentsta !== "待发货") {
-                        text += '<tr>' +
-                            '<td>' + indent[i].indentid + '</td>' +
-                            '<td>' + indent[i].pname + '</td>' +
-                            '<td>' + indent[i].cprice + '</td>' +
-                            '<td>' + indent[i].counts + '</td>' +
-                            '<td>' + indent[i].ctime + '</td>' +
-                            '<td>' + indent[i].indentsta + '</td>' +
-                            '<td><button type=\"button\" data-indentid=\"' + indent[i].indentid +
-                            '\" class=\"glyphicon glyphicon-check btn" title=\"发货\" disabled></button></td>' +
-                            '</tr>';
-                    } else {
-                        text += '<tr>' +
-                            '<td>' + indent[i].indentid + '</td>' +
-                            '<td>' + indent[i].pname + '</td>' +
-                            '<td>' + indent[i].cprice + '</td>' +
-                            '<td>' + indent[i].counts + '</td>' +
-                            '<td>' + indent[i].ctime + '</td>' +
-                            '<td>' + indent[i].indentsta + '</td>' +
-                            '<td><button type=\"button\" data-indentid=\"' + indent[i].indentid +
-                            '\" class=\"glyphicon glyphicon-check btn" title=\"发货\"></button></td>' +
-                            '</tr>';
+                if(indent.length==0){
+                    text = '<tr>暂无订单</tr>';
+                }else{
+                    for (var i = 0; i < indent.length; i++) {
+                        if (indent[i].indentsta !== "待发货") {
+                            text += '<tr>' +
+                                '<td>' + indent[i].indentid + '</td>' +
+                                '<td>' + indent[i].pname + '</td>' +
+                                '<td>' + indent[i].cprice + '</td>' +
+                                '<td>' + indent[i].counts + '</td>' +
+                                '<td>' + indent[i].ctime + '</td>' +
+                                '<td>' + indent[i].indentsta + '</td>' +
+                                '<td><button type=\"button\" data-indentid=\"' + indent[i].indentid +
+                                '\" class=\"glyphicon glyphicon-check btn" title=\"发货\" disabled></button></td>' +
+                                '</tr>';
+                        } else {
+                            text += '<tr>' +
+                                '<td>' + indent[i].indentid + '</td>' +
+                                '<td>' + indent[i].pname + '</td>' +
+                                '<td>' + indent[i].cprice + '</td>' +
+                                '<td>' + indent[i].counts + '</td>' +
+                                '<td>' + indent[i].ctime + '</td>' +
+                                '<td>' + indent[i].indentsta + '</td>' +
+                                '<td><button type=\"button\" data-indentid=\"' + indent[i].indentid +
+                                '\" class=\"glyphicon glyphicon-check btn" title=\"发货\"></button></td>' +
+                                '</tr>';
+                        }
                     }
                 }
             }
